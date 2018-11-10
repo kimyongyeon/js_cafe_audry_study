@@ -87,7 +87,7 @@ let Index = {
     }
     return resultFilterNames;
   },
-  btnSave(e) {
+  btnSave: e => {
     e.preventDefault();
     // console.log("db 저장합니다. ");
   },
