@@ -1,6 +1,8 @@
 "use strict";
 
-var _es6_ch_ = require("./es6_ch_01");
+var _es6_ch_ = require("./es6_ch_02");
+
+var _es6_ch_2 = require("./es6_ch_03");
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -17,8 +19,10 @@ function () {
 
     this.name = "";
     this.id = 0;
-    var chapter1 = new _es6_ch_.Chapter1();
-    chapter1.fnIterator();
+    var chapter3 = new _es6_ch_2.Chapter3(); // chapter3.fnIterator();
+    // chapter3.fnMap();
+
+    chapter3.fnSet();
   }
 
   _createClass(IndexEs6, [{

@@ -1,5 +1,7 @@
-import "babel-polyfill"
-export class Chapter1 {
+/**
+ * 기본문법 
+ */
+export class Chapter2 {
     constructor() {
         console.log("Chapter1 called")
     }
@@ -106,32 +108,7 @@ export class Chapter1 {
 
     }
 
-    fnIterator() {
-        // 직접작성한코드 
-        let iterator = {
-            i:0,
-            [Symbol.iterator]: function(){ // 람다 표현식 표현 불가 
-                return this;
-            },
-            next: function() { // 람다 표현식 표현 불가 
-                return (this.i < 3) ? {value:this.i++, done:false} : {value:undefined, done:true}
-            }
-        }
-        for(let value of iterator) {
-            console.log(value)
-        }
-        // npm uninstall babel-cli
-        // npm install @babel-cli -g : 최신버전 설치
-        // npm install --save-dev @babel/core @babel/preset-env 
-        // npm install --save-dev babel-polyfill
-        // polyfill 추가해야함.
-        function* gen() {
-            yield 1
-        }
-        let genr = gen()
-        genr.next()
-       
-    }
+    
 
     
 }
