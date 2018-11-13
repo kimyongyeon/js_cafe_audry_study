@@ -1,5 +1,6 @@
 import { Chapter2 } from './es6_ch_02';
 import { Chapter3 } from './es6_ch_03';
+import { Chapter4 } from './es6_ch_04';
 
 // npm install --save-dev babel-preset-es2015
 class IndexEs6 {
@@ -7,10 +8,12 @@ class IndexEs6 {
         this.name = "";
         this.id = 0;
 
-        const chapter3 = new Chapter3();
+        const chapter4 = new Chapter4();
         // chapter3.fnIterator();
         // chapter3.fnMap();
-        chapter3.fnSet();
+        // chapter3.fnProxy();
+        chapter4.fnObj();
+
 
     }
     init() {

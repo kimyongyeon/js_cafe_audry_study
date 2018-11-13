@@ -125,11 +125,11 @@ export class Chapter3 {
         }
 
         // 문제 해결
-        let = prop = Symbol('prop')
-        arr[prop] = 100
-        for (let i in arr) {
-            console.log(i)
-        }
+        // let = prop = Symbol('prop')
+        // arr[prop] = 100
+        // for (let i in arr) {
+        //     console.log(i)
+        // }
 
     }
 
@@ -151,17 +151,17 @@ export class Chapter3 {
             console.log(cnt) // 결과는 1
         }
         // promise 
-        let cnt = 0
-        let promise = new Promise((res, rej) => {
-            setTimeout(()=> {
-                cnt++
-                res(cnt)
-            })
-        })
-        promise.then(($cnt) => {
-            cnt = $cnt
-            console.log(cnt)
-        })
+        // let cnt = 0
+        // let promise = new Promise((res, rej) => {
+        //     setTimeout(()=> {
+        //         cnt++
+        //         res(cnt)
+        //     })
+        // })
+        // promise.then(($cnt) => {
+        //     cnt = $cnt
+        //     console.log(cnt)
+        // })
 
         // 성공
         let promise2 = new Promise((r1, r2) => {
@@ -212,12 +212,12 @@ export class Chapter3 {
                 r1('p4 fulfilled')
             }, 1000) // 2초 뒤 실행
         })
-        let iterable = [p3, p4]
-        Promise.race(iterable).then((value)=> { // Promise.all 메서드를 호출하고, 인자 iterable을 전달
-            console.log(value) // 결과는 'p2 fulfilled' 
-        }, (reason) => { // 모두 이행이므로 호출되지 않음.
-            console.log(reason)
-        })
+        // let iterable = [p3, p4]
+        // Promise.race(iterable).then((value)=> { // Promise.all 메서드를 호출하고, 인자 iterable을 전달
+        //     console.log(value) // 결과는 'p2 fulfilled' 
+        // }, (reason) => { // 모두 이행이므로 호출되지 않음.
+        //     console.log(reason)
+        // })
     }
 
     fnProxy() {
@@ -229,24 +229,96 @@ export class Chapter3 {
                 return Reflect.set(target, key, value, receiver)
             }
         }
-        let proxy = new Proxy(target, handler)
-        proxy.name = 'my proxy'
-        console.log(target)
+        // let proxy = new Proxy(target, handler)
+        // proxy.name = 'my proxy'
+        // console.log(target)
         let foo = () => {}
         foo.prototype.a = 100
         foo.prototype.b = 200
         let obj = new foo() // new 연산자를 수행하여 프로토타입 속성을 참조한 객체를 생성 
         let proxy = new Proxy(obj, { // Proxy 객체를 생성하고 타켓 객체를 참조 
+            setPrototypeOf: (target, proto) => { // 트랩설정 
+                let bool = Reflect.setPrototypeOf(target, proto); // 전달된 프로토타입 객체를 타켓 객체에 설정 
+                console.log(bool) // 결과 true 
+                return bool;
+            },
             getPrototypeOf: (target) => { // 트랩설정 
+                // 객체에 등록된 프로토타입 속성을 얻으려 할 때 이를 가로채 진행여부를 결정한다. 
                 console.log('트랩호출')
                 return Reflect.getPrototypeOf(target) // 타켓의 프로토타입 속성을 반환 
             }
         })
         let proto = proxy.__proto__; // 객체의 프로토타입 속성을 얻기 
+        let p = Object.setPrototypeOf(proxy, {a: 200, b:300})
+        console.log(p.__proto__)
         console.log(proto) // 결과는 객체의 프로토타입(a:100, b:200)
         // 결과: 
         // 트랩호출
         // {a: 100, b:200}
-        
+
+        let obj2 = {}
+        let proxy2 = new Proxy(obj2, {
+            isExtensible: (target) => {
+                return Reflect.isExtensible(target) // 트랩설정 
+            },
+            preventExtensions: (target) => {
+                return Reflect.preventExtensions(target) // Object.preventExtensions 동작을 가로챌 트랩 
+            },
+            defineProperty: (target, prop, desc) => { // 트랩설정 
+                Reflect.defineProperty(target, prop, desc) // 속성 추가를 진행 
+                return true // 속성 추가 여부를 반환 
+            },
+            getOwnPropertyDescriptor: (target, prop) => {
+                return Reflect.getOwnPropertyDescriptor(target, prop);
+            }
+        })
+        // Object.preventExtensions(proxy2) // 객체에 새로운 속성이 추가되지 못하도록 설정 
+        // let bool = Object.isExtensible(proxy2) // 객체에 새로운 속성이 추가 가능여부 확인 
+        // console.log(bool)
+
+        Object.defineProperty(proxy2, 'key', { // 객체에 설명자 (desciptor)가 있는 속성 추가 
+            enumerable: false,
+            configurable: false,
+            writable: false,
+            value: 'static'
+        })
+        console.log("+===========================+")
+        console.log(proxy2)
+
+        let desc = Object.getOwnPropertyDescriptor(proxy2, 'key') // 객체에 설명자가 있는 속성 얻기 
+        console.log("+===========================+")
+        console.log(desc)
+
+        let obj3 = {a:100, b:300}
+        let proxy3 = new Proxy(obj3, { // 트랩설정 
+            has:(target, prop) => { // 속성 존재여부 결과를 반환 
+                let result = Reflect.has(target, prop);
+                return result;
+            }
+        })
+        let bool2 = 'a' in proxy3 // in 연산자로 객체에 속성 존재여부 확인 
+        console.log("+===========================+")
+        console.log(bool2)
+
+        // get은 되지 않았음, set만 되나?
+        let obj4 = {};
+        let proxy4 = new Proxy(obj4, {
+            set:(target, prop, value, receive) => {
+                target[prop] = value
+                return true;
+            }
+        })
+        proxy4.a = 100
+        console.log(proxy4.a)
+
+        let obj5 = {a:100}
+        let proxy5 = new Proxy(obj5, {
+            deleteProperty:(target, prop) => {
+                Reflect.deleteProperty(target, prop)
+                return true;
+            }
+        })
+        let val = delete proxy5.a
+        console.log(val)
     }
 }

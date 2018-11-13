@@ -4,6 +4,8 @@ var _es6_ch_ = require("./es6_ch_02");
 
 var _es6_ch_2 = require("./es6_ch_03");
 
+var _es6_ch_3 = require("./es6_ch_04");
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
@@ -19,10 +21,11 @@ function () {
 
     this.name = "";
     this.id = 0;
-    var chapter3 = new _es6_ch_2.Chapter3(); // chapter3.fnIterator();
+    var chapter4 = new _es6_ch_3.Chapter4(); // chapter3.fnIterator();
     // chapter3.fnMap();
+    // chapter3.fnProxy();
 
-    chapter3.fnSet();
+    chapter4.fnObj();
   }
 
   _createClass(IndexEs6, [{
