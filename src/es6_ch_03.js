@@ -96,6 +96,11 @@ export class Chapter3 {
         let weakMap = new WeakMap()
         weakMap.set(obj, 100)
         console.log(weakMap.get(obj))
+        let iters = weakMap[Symbol.iterator]();
+        console.log(iters);
+        // 내부적으로 ephemeron table
+        // http://www.jucs.org/jucs_14_21/eliminating_cycles_in_weak/jucs_14_21_3481_3497_barros.pdf
+
     }
 
     fnWeakSet() {
